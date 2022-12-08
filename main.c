@@ -29,15 +29,15 @@ nTeam creatList() {
 void insert(nTeam L, String name,String code,
             int noWins,int noDraws,int noLoses,int goalsDifference) {
     nTeam p;
-    p = (nTeam) malloc(sizeof(nTeam));
+    p = (nTeam) malloc(sizeof(struct TEAM));
     p->Next = L->Next;
     L->Next = p;
     strcpy(p->name, name);
     strcpy(p->code, code);
-//    p->noWins=noWins;
-//    p->noDraws=noDraws;
-//    p->noLoses=noLoses;
-//    p->goalsDifference=goalsDifference;
+    p->noWins=noWins;
+    p->noDraws=noDraws;
+    p->noLoses=noLoses;
+    p->goalsDifference=goalsDifference;
     printf("insert\n");
 
 }
@@ -65,10 +65,10 @@ void print (nTeam L){
     while (1){
         printf("%s\t", p->name);
         printf("%s\t", p->code);
-//        printf("%d\t", p->noWins);
-//        printf("%d\t", p->noDraws);
-//        printf("%d\t", p->noLoses);
-//        printf("%d\n", p->goalsDifference);
+        printf("%d\t", p->noWins);
+        printf("%d\t", p->noDraws);
+        printf("%d\t", p->noLoses);
+        printf("%d\n", p->goalsDifference);
         p=p->Next;
         if(p==NULL)
             break;
