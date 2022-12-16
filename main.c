@@ -55,80 +55,80 @@ nTeam copy(nTeam L);
 void MakeEmpty(nTeam L);
 nTeam deleteTeam(nTeam p,nTeam L);
 ///////////////////////
-void radixSort(nTeam b){
-    struct node* A=createList();
-    nTeam u=b->Next;
-    while (!IsLastq(u)) {
-        Insert(u->point, A);
-        u=u->Next;
+void radixSort(nTeam teamList){
+    struct node* pointsList=createList();
+    nTeam teamPointer=teamList->Next;
+    while (!IsLastq(teamPointer)) {
+        Insert(teamPointer->point, pointsList);
+        teamPointer=teamPointer->Next;
     }
-    Insert(u->point, A);
+    Insert(teamPointer->point, pointsList);
 
     struct node* arrayList[10];
     for (int i = 0; i < 10; i++) {
         arrayList[i]=createList();
     }
-    int ab=getGreatestNum(A);
-    int n = numOfIndex(ab);
-    struct node*p;
-    int a,md,dv;
-    for (int count = 0; count < n; count++) {
-        p=A->Next;
-        md=PN10(count+1);
-        dv=PN10(count);
+    int greatestNum=getGreatestNum(pointsList);
+    int numberOfIndex = numOfIndex(greatestNum);
+    struct node*pointPointer;
+    int N,modNum,divNum;
+    for (int count = 0; count < numberOfIndex; count++) {
+        pointPointer=pointsList->Next;
+        modNum=PN10(count + 1);
+        divNum=PN10(count);
         do{
-            a=((p->Data)% md)/dv;
-            insertLast(p->Data,arrayList[a]);
-            p=p->Next;
-        } while (p!=NULL);
-        DeleteList(A);
+            N= ((pointPointer->Data) % modNum) / divNum;
+            insertLast(pointPointer->Data, arrayList[N]);
+            pointPointer=pointPointer->Next;
+        } while (pointPointer != NULL);
+        DeleteList(pointsList);
         for (int i = 0; i < 10; i++) {
             if(!IsEmptyq(arrayList[i])){
-                insertListLast(arrayList[i],A);
+                insertListLast(arrayList[i], pointsList);
                 arrayList[i]->Next=NULL;
             }
         }
     }
     ////////////   ////
-    nTeam e=creatList();
-    u=b->Next;
-    while(u!=NULL){
-        insert(e,u->name,u->code,u->noWins,u->noDraws,
-               u->noLoses,u->goalsDifference);
-//        b=deleteTeam(b);
-//        PrintList(b);
-        u=u->Next;
+    nTeam sortedList=creatList();
+    teamPointer=teamList->Next;
+    while(teamPointer != NULL){
+        insert(sortedList, teamPointer->name, teamPointer->code, teamPointer->noWins, teamPointer->noDraws,
+               teamPointer->noLoses, teamPointer->goalsDifference);
+//        teamList=deleteTeam(teamList);
+//        PrintList(teamList);
+        teamPointer=teamPointer->Next;
     }
-    MakeEmpty(b);
-//    PrintList(A);
-//    PrintList(e);
+    MakeEmpty(teamList);
+//    PrintList(pointsList);
+//    PrintList(sortedList);
 
-    struct node*o=A->Next;
-//    printf("hjhj\n");
-    while (o != NULL) {
-        u= findTeam(o->Data,e);
-        insert(b,u->name,u->code,u->noWins,u->noDraws,
-               u->noLoses,u->goalsDifference);
-        e=deleteTeam(u,e);
-//        PrintList(e);
-        o=o->Next;
-
+//    struct node*o=pointsList->Next;
+    pointPointer=pointsList->Next;
+//    printf("hjhj\numberOfIndex");
+    while (pointPointer != NULL) {
+        teamPointer= findTeam(pointPointer->Data, sortedList);
+        insert(teamList, teamPointer->name, teamPointer->code, teamPointer->noWins, teamPointer->noDraws,
+               teamPointer->noLoses, teamPointer->goalsDifference);
+        sortedList=deleteTeam(teamPointer, sortedList);
+//        PrintList(sortedList);
+        pointPointer=pointPointer->Next;
     }
-//    PrintList(b);
-    u=b;
-    int c=1;
-    while (u->Next->Next != NULL ) {
-        if((u->Next->point==u->Next->Next->point) &&
-                (u->Next->goalsDifference)<(u->Next->Next->goalsDifference)){
-            nTeam s=u->Next;
-            u->Next=s->Next;
-            s->Next=u->Next->Next;
-            u->Next->Next=s;
+//    PrintList(teamList);
+    teamPointer=teamList;
+//    int c=1;
+    while (teamPointer->Next->Next != NULL ) {
+        if((teamPointer->Next->point == teamPointer->Next->Next->point) &&
+           (teamPointer->Next->goalsDifference) < (teamPointer->Next->Next->goalsDifference)){
+            nTeam firstTeam=teamPointer->Next;
+            teamPointer->Next=firstTeam->Next;
+            firstTeam->Next=teamPointer->Next->Next;
+            teamPointer->Next->Next=firstTeam;
 
         }
-        u=u->Next;
+        teamPointer=teamPointer->Next;
     }
-//    print(b);
+//    print(teamList);
 }
 ///////////////////////////////////////////////////////
 //struct Players{
@@ -142,15 +142,15 @@ nPlayer creatPlayer(){
     L->Next=NULL;
     printf("creat\n");
     return L;
-}void Inserwt(String X, nPlayer P){
+}void insertPlayer(String X, nPlayer P){
     nPlayer temp;
-    temp = (struct node*)malloc(sizeof(struct node));
+    temp = (nPlayer)malloc(sizeof(struct Players));
     strcpy(temp->name, X);
     temp->Next = P->Next;
     P->Next = temp;
     printf("jin\n");
 }
-int compare(char a[],char b[])
+int compare(char a[100],char b[100])
 {
     int flag=0,i=0;  // integer variables declaration
     while(a[i]!='\0' &&b[i]!='\0')  // while loop
@@ -340,7 +340,7 @@ int main() {
             t = strtok(a, "-");
             t = strtok(NULL, "-");
             printf("%s\n",t);
-            Inserwt(t,I->listPlayer);
+            insertPlayer(t, I->listPlayer);
         }
     }
 
